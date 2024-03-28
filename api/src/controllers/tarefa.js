@@ -25,10 +25,48 @@ const addTarefa = (req, res) => {
     }
 }
 
-//CRUD - READ
+//CRUD - READ ALL e READ por Id
 const getTarefas = (req, res) => {
     if (req.params.id != null) {
         con.query(`SELECT * FROM Tarefa WHERE id = '${req.params.id}'`, (err, result) => {
+            if (err) {
+                res.status(500).send('Erro ao listar Tarefas');
+            }
+            res.json(result);
+        });
+    } else {
+        con.query('SELECT * FROM Tarefa', (err, result) => {
+            if (err) {
+                res.status(500).send('Erro ao listar Tarefas');
+            }
+            res.json(result);
+        });
+    }
+}
+
+//CRUD - READ por status
+const getTarefaStatus = (req, res) => {
+    if (req.params.status != null) {
+        con.query(`SELECT * FROM Tarefa WHERE status like '${req.params.status}'`, (err, result) => {
+            if (err) {
+                res.status(500).send('Erro ao listar Tarefas');
+            }
+            res.json(result);
+        });
+    } else {
+        con.query('SELECT * FROM Tarefa', (err, result) => {
+            if (err) {
+                res.status(500).send('Erro ao listar Tarefas');
+            }
+            res.json(result);
+        });
+    }
+}
+
+//CRUD - READ por data
+const getTarefaData = (req, res) => {
+    if (req.params.data != null) {
+        con.query(`SELECT * FROM Tarefa WHERE data like '%${req.params.data}%'`, (err, result) => {
             if (err) {
                 res.status(500).send('Erro ao listar Tarefas');
             }
@@ -119,6 +157,8 @@ const deleteTarefa = (req, res) => {
 module.exports = {
     addTarefa,
     getTarefas,
+    getTarefaStatus,
+    getTarefaData,
     updateTarefa,
     deleteTarefa
 }
